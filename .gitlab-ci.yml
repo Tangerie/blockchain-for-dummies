@@ -1,0 +1,35 @@
+image: comp1531/basic:latest
+
+cache:
+  paths:
+    - node_modules
+    
+stages:
+  - setup
+  - checks
+  - build
+
+npm_install:
+  stage: setup
+  script:
+    - npm install
+
+testing:
+  stage: checks
+  script:
+    - npm run test
+
+linting:
+  stage: checks
+  script:
+    - npm run lint
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+    paths:
+      - dist/
+  when: on_success
